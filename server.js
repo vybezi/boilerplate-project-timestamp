@@ -36,22 +36,21 @@ app.get('/api/timestamp/:date_string?', function(req,res){
 
     date_string = req.params.date_string;
 
-    if(parseFloat(date_string) && (date_string != "0" || date_string == 0)){
-        date_string = parseFloat(date_string);
+   
+  if(new Date(date_string) != "Invalid Date"){
         response.unix = new Date(date_string).getTime();
         response.utc = new Date(date_string).toUTCString();
-    }else if(new Date(date_string) != "Invalid Date"){
-        response.unix = new Date(date_string).getTime();
-        response.utc = new Date(date_string).toUTCString();
-    }else if(date_string == "0" || date_string == 0){
-        response.unix = new Date(0).getTime();
-        response.utc = new Date(0).toUTCString();
-    }else{
-        return {error:"Invalid Date"};
-    }
+        res.send(response);
+  }else
+  
+  if(parseFloat(date_string)){
+    let fDate = parseFloat(date_string);
+    response.unix = new Date(fDate).getTime();
+        response.utc = new Date(fDate).toUTCString();
+        res.send(response);
+  }
 
-
-    res.send(response);
+  
 })
 
 
